@@ -27,7 +27,7 @@ const schema = Yup.object().shape({
   firstname: Yup.string().label("First Name").trim().required().min(3).max(64),
   lastname: Yup.string().label("Last Name").trim().required().min(3).max(64),
   address: Yup.string().label("Address").trim().required().min(3),
-  // email: Yup.string().email("Invalid email address").required("Email is required"),
+  email: Yup.string().email("Invalid email address").required("Email is required"),
   number: Yup.number().label("Number").required(),
   work: Yup.string().label("Work").oneOf(["unemployed", "employed"]),
   company: Yup.string().when("work", ([work], schema) => {
@@ -128,7 +128,7 @@ const Create: React.FC = () => {
           />
         )}
       />
-      {/* <Controller
+      <Controller
         control={control}
         name="email"
         render={({ field }) => (
@@ -138,11 +138,11 @@ const Create: React.FC = () => {
             sx={{ maxWidth: 600 }}
             label="Email"
             margin="dense"
-            // error={!!errors.email}
-            // helperText={errors.email && `${errors.email.message}`}
+            error={!!errors.email}
+            helperText={errors.email && `${errors.email.message}`}
           />
         )}
-      /> */}
+      />
       <Controller
         control={control}
         name="number"
