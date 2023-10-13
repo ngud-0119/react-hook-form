@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import { useForm } from "@refinedev/react-hook-form";
 import { HttpError } from "@refinedev/core";
 import { Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import * as Yup from "yup";
 
@@ -16,6 +16,7 @@ interface IFormValue {
   firstname: string;
   lastname: string;
   address: string;
+  email: string;
   number: number;
   work: string;
   company: string;
@@ -26,6 +27,7 @@ const schema = Yup.object().shape({
   firstname: Yup.string().label("First Name").trim().required().min(3).max(64),
   lastname: Yup.string().label("Last Name").trim().required().min(3).max(64),
   address: Yup.string().label("Address").trim().required().min(3),
+  // email: Yup.string().email("Invalid email address").required("Email is required"),
   number: Yup.number().label("Number").required(),
   work: Yup.string().label("Work").oneOf(["unemployed", "employed"]),
   company: Yup.string().when("work", ([work], schema) => {
@@ -46,6 +48,7 @@ const defaultValues = {
   firstname: "",
   lastname: "",
   address: "",
+  email: "",
   number: 0,
   work: "unemployed",
   company: "",
@@ -65,6 +68,8 @@ const Create: React.FC = () => {
   });
 
   const handleSubmission = (data: IFormValue) => console.log(data);
+
+  const work = watch("work");
 
   return (
     <form
@@ -123,6 +128,21 @@ const Create: React.FC = () => {
           />
         )}
       />
+      {/* <Controller
+        control={control}
+        name="email"
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            sx={{ maxWidth: 600 }}
+            label="Email"
+            margin="dense"
+            // error={!!errors.email}
+            // helperText={errors.email && `${errors.email.message}`}
+          />
+        )}
+      /> */}
       <Controller
         control={control}
         name="number"
@@ -159,36 +179,40 @@ const Create: React.FC = () => {
           )}
         />
       </FormControl>
-      <Controller
-        control={control}
-        name="company"
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            sx={{ maxWidth: 600 }}
-            label="Company"
-            margin="dense"
-            error={!!errors.company}
-            helperText={errors.company && `${errors.company.message}`}
+      {work === "employed" && (
+        <>
+          <Controller
+            control={control}
+            name="company"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                sx={{ maxWidth: 600 }}
+                label="Company"
+                margin="dense"
+                error={!!errors.company}
+                helperText={errors.company && `${errors.company.message}`}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        control={control}
-        name="role"
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            sx={{ maxWidth: 600 }}
-            label="Role"
-            margin="dense"
-            error={!!errors.role}
-            helperText={errors.role && `${errors.role.message}`}
+          <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                sx={{ maxWidth: 600 }}
+                label="Role"
+                margin="dense"
+                error={!!errors.role}
+                helperText={errors.role && `${errors.role.message}`}
+              />
+            )}
           />
-        )}
-      />
+        </>
+      )}
       <Button
         type="submit"
         variant="contained"
