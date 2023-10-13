@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { useForm } from "@refinedev/react-hook-form";
 import { HttpError } from "@refinedev/core";
 import { Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
 
 import * as Yup from "yup";
 
@@ -60,6 +61,7 @@ const Create: React.FC = () => {
   } = useForm({
     mode: "onChange",
     defaultValues,
+    resolver: yupResolver(schema),
   });
 
   const handleSubmission = (data: IFormValue) => console.log(data);
@@ -67,7 +69,7 @@ const Create: React.FC = () => {
   return (
     <form
       style={{ display: "flex", flexDirection: "column" }}
-      onSubmit={handleSubmit(handleSubmission)}
+      // onSubmit={handleSubmit(handleSubmission)}
     >
       <Controller
         control={control}
@@ -116,6 +118,8 @@ const Create: React.FC = () => {
             sx={{ maxWidth: 600 }}
             label="Address"
             margin="dense"
+            error={!!errors.address}
+            helperText={errors.address && `${errors.address.message}`}
           />
         )}
       />
@@ -130,6 +134,8 @@ const Create: React.FC = () => {
             label="Number"
             margin="dense"
             type="number"
+            error={!!errors.number}
+            helperText={errors.number && `${errors.number.message}`}
           />
         )}
       />
@@ -163,6 +169,8 @@ const Create: React.FC = () => {
             sx={{ maxWidth: 600 }}
             label="Company"
             margin="dense"
+            error={!!errors.company}
+            helperText={errors.company && `${errors.company.message}`}
           />
         )}
       />
@@ -176,6 +184,8 @@ const Create: React.FC = () => {
             sx={{ maxWidth: 600 }}
             label="Role"
             margin="dense"
+            error={!!errors.role}
+            helperText={errors.role && `${errors.role.message}`}
           />
         )}
       />
